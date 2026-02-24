@@ -16,12 +16,14 @@ export interface VisitorCardProps {
   visitor: VisitorRecord
   showCheckoutButton?: boolean
   className?: string
+  basePath?: string
 }
 
 export function VisitorCard({
   visitor,
   showCheckoutButton = false,
   className,
+  basePath = '/guard/visitors',
 }: VisitorCardProps) {
   const navigate = useNavigate()
   const checkOutVisitor = useVisitorStore((s) => s.checkOutVisitor)
@@ -35,7 +37,7 @@ export function VisitorCard({
   }
 
   const handleCardClick = () => {
-    navigate(`/guard/visitors/${visitor.id}`)
+    navigate(`${basePath}/${visitor.id}`)
   }
 
   return (
