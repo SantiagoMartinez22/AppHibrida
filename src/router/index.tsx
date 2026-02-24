@@ -4,6 +4,9 @@ import { GuardDashboard } from '@/pages/guard/GuardDashboard'
 import { RegisterVisitor } from '@/pages/guard/RegisterVisitor'
 import { VisitorListPage } from '@/pages/guard/VisitorListPage'
 import { VisitorDetail } from '@/pages/guard/VisitorDetail'
+import { AdminDashboard } from '@/pages/admin/AdminDashboard'
+import { AdminVisitorListPage } from '@/pages/admin/AdminVisitorListPage'
+import { AdminVisitorDetail } from '@/pages/admin/AdminVisitorDetail'
 
 export function AppRouter(): React.ReactElement {
   return (
@@ -13,7 +16,9 @@ export function AppRouter(): React.ReactElement {
       <Route path="/guard/register" element={<RegisterVisitor />} />
       <Route path="/guard/visitors" element={<VisitorListPage />} />
       <Route path="/guard/visitors/:id" element={<VisitorDetail />} />
-      <Route path="/admin" element={<div className="p-4">Admin (próximamente)</div>} />
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/admin/visitors" element={<AdminVisitorListPage />} />
+      <Route path="/admin/visitors/:id" element={<AdminVisitorDetail />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
