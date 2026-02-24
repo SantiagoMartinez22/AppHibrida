@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { FiHome, FiGrid, FiList } from 'react-icons/fi'
 import { cn } from '@/lib/utils'
+import { useMemo } from 'react'
 
 type NavItem = {
   icon: React.ComponentType<{ className?: string }>
@@ -8,19 +9,26 @@ type NavItem = {
   label: string
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { icon: FiHome, path: '/', label: 'Inicio' },
-  { icon: FiGrid, path: '/guard', label: 'Dashboard' },
-  { icon: FiList, path: '/guard/visitors', label: 'Visitantes' },
-]
-
 export function BottomNavBar() {
   const navigate = useNavigate()
   const location = useLocation()
 
+  // Detect current role based on URL
+  const isAdmin = location.pathname.startsWith('/admin')
+  const rolePrefix = isAdmin ? '/admin' : '/guard'
+
+  // Generate role-specific navigation items
+  const navItems: NavItem[] = useMemo(() => [
+    { icon: FiHome, path: '/', label: 'Inicio' },
+    { icon: FiGrid, path: rolePrefix, label: 'Dashboard' },
+    { icon: FiList, path: `${rolePrefix}/visitors`, label: 'Visitantes' },
+  ], [rolePrefix])
+
   const isActive = (path: string) => {
-    if (path === '/guard/visitors') return location.pathname.startsWith('/guard/visitors')
-    if (path === '/guard') return location.pathname === '/guard' || location.pathname === '/guard/register'
+    if (path.endsWith('/visitors')) return location.pathname.startsWith(path)
+    if (path === rolePrefix) {
+      return location.pathname === path || location.pathname === `${rolePrefix}/register`
+    }
     return location.pathname === path
   }
 
@@ -29,7 +37,7 @@ export function BottomNavBar() {
       className="fixed bottom-0 left-0 right-0 flex items-center justify-around border-t bg-background py-3 safe-area-inset-bottom"
       role="navigation"
     >
-      {NAV_ITEMS.map((item) => {
+      {navItems.map((item) => {
         const Icon = item.icon
         const active = isActive(item.path)
         return (
