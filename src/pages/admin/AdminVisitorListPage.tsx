@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react'
 import { SearchInput } from '@/components/atoms/SearchInput'
 import { ThreeTabToggle } from '@/components/molecules/ThreeTabToggle'
 import { VisitorCard } from '@/components/molecules/VisitorCard'
+import { VisitorBarChart } from '@/components/molecules/VisitorBarChart'
+import { MonthCalendar } from '@/components/molecules/MonthCalendar'
 import { PageHeader } from '@/components/templates/PageHeader'
 import { BottomNavBar } from '@/components/templates/BottomNavBar'
 import { useVisitorStore } from '@/store/visitorStore'
@@ -57,8 +59,9 @@ export function AdminVisitorListPage() {
         />
         
         {tab === 'stats' ? (
-          <div className="flex items-center justify-center py-16">
-            <p className="text-lg text-muted-foreground">Próximamente</p>
+          <div className="space-y-4">
+            <VisitorBarChart visitors={visitors} />
+            <MonthCalendar />
           </div>
         ) : (
           <div className="space-y-3">
