@@ -13,6 +13,7 @@ type TabValue = 'active' | 'history' | 'stats'
 export function AdminVisitorListPage() {
   const [search, setSearch] = useState('')
   const [tab, setTab] = useState<TabValue>('active')
+  const [statsDate, setStatsDate] = useState(new Date())
 
   const visitors = useVisitorStore((s) => s.visitors)
 
@@ -45,6 +46,24 @@ export function AdminVisitorListPage() {
     ? 'Historial de Registros'
     : 'Estadísticas de Visitantes'
 
+  const statsDateRange = useMemo(() => {
+    const selected = new Date(statsDate)
+    const day = selected.getDay()
+    const mondayOffset = day === 0 ? -6 : 1 - day
+
+    const start = new Date(selected)
+    start.setDate(selected.getDate() + mondayOffset)
+    start.setHours(0, 0, 0, 0)
+
+    const end = new Date(start)
+    end.setDate(start.getDate() + 6)
+
+    return {
+      start,
+      end,
+    }
+  }, [statsDate])
+
   return (
     <main className="min-h-screen bg-background pb-28 md:pb-8 md:pt-24">
       <div className="max-w-5xl mx-auto px-4 py-6">
@@ -68,8 +87,8 @@ export function AdminVisitorListPage() {
         
         {tab === 'stats' ? (
           <div className="grid gap-4 md:grid-cols-2">
-            <VisitorBarChart visitors={visitors} />
-            <MonthCalendar />
+            <VisitorBarChart visitors={visitors} dateRange={statsDateRange} />
+            <MonthCalendar selectedDate={statsDate} onDateSelect={setStatsDate} />
           </div>
         ) : (
           <div className="grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">

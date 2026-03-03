@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { FiChevronRight } from 'react-icons/fi'
 import { toast } from 'sonner'
 import { StatusBadge } from '@/components/atoms/StatusBadge'
 import { AppButton } from '@/components/atoms/AppButton'
+import { ConfirmModal } from '@/components/molecules/ConfirmModal'
 import { useVisitorStore } from '@/store/visitorStore'
 import type { VisitorRecord } from '@/types'
 import { cn } from '@/lib/utils'
@@ -27,12 +29,18 @@ export function VisitorCard({
 }: VisitorCardProps) {
   const navigate = useNavigate()
   const checkOutVisitor = useVisitorStore((s) => s.checkOutVisitor)
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false)
 
   const entryTime = TIME_FORMAT.format(new Date(visitor.createdAt))
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.stopPropagation()
+    setIsCheckoutModalOpen(true)
+  }
+
+  const confirmCheckout = () => {
     checkOutVisitor(visitor.id)
+    setIsCheckoutModalOpen(false)
     toast.success('Salida registrada')
   }
 
@@ -73,6 +81,16 @@ export function VisitorCard({
           <FiChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden />
         </div>
       )}
+
+      <ConfirmModal
+        open={isCheckoutModalOpen}
+        title="Registrar salida"
+        description="¿Seguro que quiere registrar la salida de este visitante?"
+        confirmLabel="Sí, registrar"
+        cancelLabel="Cancelar"
+        onConfirm={confirmCheckout}
+        onCancel={() => setIsCheckoutModalOpen(false)}
+      />
     </div>
   )
 }
