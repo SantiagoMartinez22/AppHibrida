@@ -7,11 +7,8 @@ import { Label } from '@/components/atoms/Label'
 import { useTheme } from '@/hooks/useTheme'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
+import { isValidRole } from '@/lib/visitor-utils'
 import type { Role } from '@/types'
-
-function isValidRole(role: unknown): role is Role {
-  return role === 'guard' || role === 'admin'
-}
 
 export function Home() {
   const navigate = useNavigate()
