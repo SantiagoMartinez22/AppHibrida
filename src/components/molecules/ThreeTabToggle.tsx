@@ -1,23 +1,23 @@
 import { cn } from '@/lib/utils'
 
-export interface TabToggleOption<T extends string> {
+export interface ThreeTabToggleOption<T extends string> {
   value: T
   label: string
 }
 
-export interface TabToggleProps<T extends string> {
-  options: [TabToggleOption<T>, TabToggleOption<T>]
+export interface ThreeTabToggleProps<T extends string> {
+  options: [ThreeTabToggleOption<T>, ThreeTabToggleOption<T>, ThreeTabToggleOption<T>]
   value: T
   onChange: (value: T) => void
   className?: string
 }
 
-export function TabToggle<T extends string>({
+export function ThreeTabToggle<T extends string>({
   options,
   value,
   onChange,
   className,
-}: TabToggleProps<T>) {
+}: ThreeTabToggleProps<T>) {
   return (
     <div
       className={cn(

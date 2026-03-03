@@ -18,7 +18,12 @@ export function VisitorListPage() {
     const q = search.trim().toLowerCase()
     let list = tab === 'active'
       ? visitors.filter((v) => v.status === 'active')
-      : visitors.filter((v) => v.status === 'departed')
+      : [...visitors]
+
+    if (tab === 'history') {
+      list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    }
+
     if (q) {
       list = list.filter(
         (v) =>
@@ -30,28 +35,29 @@ export function VisitorListPage() {
     return list
   }, [visitors, tab, search])
 
-  const title = tab === 'active' ? 'Visitantes Activos' : 'Historial Visitantes'
+  const title = tab === 'active' ? 'Visitantes Activos' : 'Historial de Registros'
 
   return (
-    <main className="min-h-screen bg-background pb-20">
-      <div className="max-w-lg mx-auto px-4 py-6">
+    <main className="min-h-screen bg-background pb-28 md:pb-8 md:pt-24">
+      <div className="max-w-5xl mx-auto px-4 py-6">
         <PageHeader title={title} />
-        <SearchInput
-          placeholder="Buscar..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="mb-4"
-        />
-        <TabToggle<TabValue>
-          options={[
-            { value: 'active', label: 'Activos' },
-            { value: 'history', label: 'Historial' },
-          ]}
-          value={tab}
-          onChange={setTab}
-          className="mb-4"
-        />
-        <div className="space-y-3">
+        <section className="mx-auto mb-4 w-full max-w-3xl space-y-4">
+          <SearchInput
+            placeholder="Buscar..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <TabToggle<TabValue>
+            options={[
+              { value: 'active', label: 'Activos' },
+              { value: 'history', label: 'Historial' },
+            ]}
+            value={tab}
+            onChange={setTab}
+          />
+        </section>
+
+        <div className="grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
           {filtered.map((visitor) => (
             <VisitorCard
               key={visitor.id}
@@ -60,7 +66,7 @@ export function VisitorListPage() {
             />
           ))}
           {filtered.length === 0 && (
-            <p className="text-center text-muted-foreground py-8">
+            <p className="col-span-full py-8 text-center text-muted-foreground">
               {search ? 'No hay resultados' : 'No hay visitantes'}
             </p>
           )}

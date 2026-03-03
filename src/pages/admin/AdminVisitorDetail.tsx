@@ -1,10 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
-import { toast } from 'sonner'
 import { PageHeader } from '@/components/templates/PageHeader'
 import { StatusBadge } from '@/components/atoms/StatusBadge'
-import { AppButton } from '@/components/atoms/AppButton'
-import { ConfirmModal } from '@/components/molecules/ConfirmModal'
 import { useVisitorStore } from '@/store/visitorStore'
 
 const DATE_TIME_FORMAT = new Intl.DateTimeFormat('es', {
@@ -27,12 +23,10 @@ function DetailRow({ label, value }: { label: string; value: string }) {
   )
 }
 
-export function VisitorDetail() {
+export function AdminVisitorDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const visitors = useVisitorStore((s) => s.visitors)
-  const checkOutVisitor = useVisitorStore((s) => s.checkOutVisitor)
-  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false)
 
   const visitor = visitors.find((v) => v.id === id)
 
@@ -56,12 +50,6 @@ export function VisitorDetail() {
 
   const entryDateTime = DATE_TIME_FORMAT.format(new Date(visitor.createdAt))
 
-  const handleConfirmCheckout = () => {
-    checkOutVisitor(visitor.id)
-    setIsCheckoutModalOpen(false)
-    toast.success('Salida registrada')
-  }
-
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-lg mx-auto px-4 py-6">
@@ -77,26 +65,8 @@ export function VisitorDetail() {
           <DetailRow label="Observación" value={visitor.observation ?? ''} />
           <DetailRow label="Fecha/Hora de entrada" value={entryDateTime} />
           <DetailRow label="Registrado por" value={visitor.registeredBy} />
-
-          {visitor.status === 'active' && (
-            <div className="pt-2">
-              <AppButton type="button" onClick={() => setIsCheckoutModalOpen(true)}>
-                Registrar salida
-              </AppButton>
-            </div>
-          )}
         </div>
       </div>
-
-      <ConfirmModal
-        open={isCheckoutModalOpen}
-        title="Registrar salida"
-        description="¿Seguro que quiere registrar la salida de este visitante?"
-        confirmLabel="Sí, registrar"
-        cancelLabel="Cancelar"
-        onConfirm={handleConfirmCheckout}
-        onCancel={() => setIsCheckoutModalOpen(false)}
-      />
     </main>
   )
 }
