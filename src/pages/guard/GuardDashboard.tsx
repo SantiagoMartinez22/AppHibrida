@@ -1,15 +1,18 @@
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { FiPlus, FiChevronRight } from 'react-icons/fi'
 import { toast } from 'sonner'
 import { DashboardStats } from '@/components/organisms/DashboardStats'
 import { BottomNavBar } from '@/components/templates/BottomNavBar'
 import { AppButton } from '@/components/atoms/AppButton'
+import { ConfirmModal } from '@/components/molecules/ConfirmModal'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
 import { useHandoverStore } from '@/store/handoverStore'
 
 export function GuardDashboard() {
   const navigate = useNavigate()
+  const [isHandoverModalOpen, setIsHandoverModalOpen] = useState(false)
 
   const session = useAuthStore((s) => s.session)
   const logout = useAuthStore((s) => s.logout)
@@ -21,26 +24,24 @@ export function GuardDashboard() {
       return
     }
 
-    toast('Entrega de turno', {
-      description: '¿Seguro que quiere entregar el turno?',
-      action: {
-        label: 'Sí, entregar',
-        onClick: () => {
-          deliverTurn({ fromUser: session.username })
-          logout({
-            type: 'success',
-            title: 'Turno entregado correctamente',
-            description: 'La sesión se cerró para permitir el siguiente ingreso',
-          })
-          toast.success('Turno entregado correctamente')
-          navigate('/', { replace: true })
-        },
-      },
-      cancel: {
-        label: 'Cancelar',
-        onClick: () => undefined,
-      },
+    setIsHandoverModalOpen(true)
+  }
+
+  const confirmDeliverTurn = () => {
+    if (!session?.username) {
+      setIsHandoverModalOpen(false)
+      return
+    }
+
+    deliverTurn({ fromUser: session.username })
+    logout({
+      type: 'success',
+      title: 'Turno entregado correctamente',
+      description: 'La sesión se cerró para permitir el siguiente ingreso',
     })
+    setIsHandoverModalOpen(false)
+    toast.success('Turno entregado correctamente')
+    navigate('/', { replace: true })
   }
 
   return (
@@ -107,6 +108,15 @@ export function GuardDashboard() {
           </div>
         </section>
       </div>
+      <ConfirmModal
+        open={isHandoverModalOpen}
+        title="Entrega de turno"
+        description="¿Seguro que quiere registrar la entrega de turno?"
+        confirmLabel="Sí, entregar"
+        cancelLabel="Cancelar"
+        onConfirm={confirmDeliverTurn}
+        onCancel={() => setIsHandoverModalOpen(false)}
+      />
       <BottomNavBar />
     </main>
   )

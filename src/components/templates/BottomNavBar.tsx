@@ -1,9 +1,9 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { FiHome, FiList, FiBookOpen, FiLogOut } from 'react-icons/fi'
 import { cn } from '@/lib/utils'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useAuthStore } from '@/store/authStore'
-import { toast } from 'sonner'
+import { ConfirmModal } from '@/components/molecules/ConfirmModal'
 
 type NavItem = {
   icon: React.ComponentType<{ className?: string }>
@@ -16,30 +16,24 @@ export function BottomNavBar() {
   const navigate = useNavigate()
   const location = useLocation()
   const logout = useAuthStore((s) => s.logout)
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
   // Detect current role based on URL
   const isAdmin = location.pathname.startsWith('/admin')
   const rolePrefix = isAdmin ? '/admin' : '/guard'
 
   const handleLogout = () => {
-    toast('Cerrar sesión', {
-      description: '¿Seguro que quiere cerrar sesión?',
-      action: {
-        label: 'Sí, salir',
-        onClick: () => {
-          logout({
-            type: 'info',
-            title: 'Sesión cerrada',
-            description: 'Hasta pronto',
-          })
-          navigate('/', { replace: true })
-        },
-      },
-      cancel: {
-        label: 'Cancelar',
-        onClick: () => undefined,
-      },
+    setIsLogoutModalOpen(true)
+  }
+
+  const confirmLogout = () => {
+    logout({
+      type: 'info',
+      title: 'Sesión cerrada',
+      description: 'Hasta pronto',
     })
+    setIsLogoutModalOpen(false)
+    navigate('/', { replace: true })
   }
 
   // Generate role-specific navigation items
@@ -101,14 +95,14 @@ export function BottomNavBar() {
       </nav>
 
       <nav
-        className="hidden md:block fixed top-0 left-0 right-0 border-b bg-background/95 backdrop-blur"
+        className="fixed left-0 right-0 top-0 hidden border-b bg-gradient-to-r from-primary/15 via-background/95 to-accent/70 backdrop-blur md:block"
         role="navigation"
       >
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between bg-gradient-to-r from-primary/5 via-transparent to-accent/40 px-6 py-3">
+        <div className="flex w-full items-center justify-between px-6 py-3 lg:px-10">
           <button
             type="button"
             onClick={() => navigate('/')}
-            className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm font-semibold text-foreground"
+            className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/90 px-3 py-1.5 text-sm font-semibold text-foreground shadow-sm"
             aria-label="Ir al inicio"
           >
             <FiBookOpen className="h-4 w-4 text-primary" aria-hidden />
@@ -127,8 +121,8 @@ export function BottomNavBar() {
                   className={cn(
                     'inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                     active
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:bg-accent/70 hover:text-foreground'
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-foreground/80 hover:bg-card/80 hover:text-foreground'
                   )}
                   aria-label={item.label}
                   aria-current={active ? 'page' : undefined}
@@ -141,6 +135,16 @@ export function BottomNavBar() {
           </div>
         </div>
       </nav>
+
+      <ConfirmModal
+        open={isLogoutModalOpen}
+        title="Cerrar sesión"
+        description="¿Seguro que quiere cerrar sesión?"
+        confirmLabel="Sí, salir"
+        cancelLabel="Cancelar"
+        onConfirm={confirmLogout}
+        onCancel={() => setIsLogoutModalOpen(false)}
+      />
     </>
   )
 }
