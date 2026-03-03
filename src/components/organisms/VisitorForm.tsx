@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { FormField } from '@/components/molecules/FormField'
@@ -21,6 +21,10 @@ export function VisitorForm() {
   const addVisitor = useVisitorStore((s) => s.addVisitor)
   const session = useAuthStore((s) => s.session)
   const [form, setForm] = useState({ ...INITIAL_FORM, registeredBy: session?.username ?? '' })
+    useEffect(() => {
+      setForm((prev) => ({ ...prev, registeredBy: session?.username ?? '' }))
+    }, [session?.username])
+
   const [errors, setErrors] = useState<FormErrors>({})
   const [saveError, setSaveError] = useState(false)
 
@@ -50,13 +54,13 @@ export function VisitorForm() {
         observation: form.observation.trim() || undefined,
       })
       toast.success('Registro guardado correctamente')
-      setForm(INITIAL_FORM)
+      setForm({ ...INITIAL_FORM, registeredBy: session?.username ?? '' })
       setErrors({})
       navigate('/guard')
     } catch {
       setSaveError(true)
     }
-  }, [form, validate, addVisitor, navigate])
+  }, [form, validate, addVisitor, navigate, session?.username])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -86,11 +90,11 @@ export function VisitorForm() {
         <div className="space-y-4">
           <FormField
             id="registeredBy"
-            label="Registrado por"
+            label="Registrado por (vigilante activo)"
             required
-            placeholder="Ej: Pepito Pérez"
             value={form.registeredBy}
-            onChange={(e) => updateField('registeredBy', e.target.value)}
+            readOnly
+            disabled
             error={errors.registeredBy}
           />
           <FormField
