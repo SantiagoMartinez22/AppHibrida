@@ -4,28 +4,10 @@ import { toast } from 'sonner'
 import { PageHeader } from '@/components/templates/PageHeader'
 import { StatusBadge } from '@/components/atoms/StatusBadge'
 import { AppButton } from '@/components/atoms/AppButton'
+import { DetailRow } from '@/components/atoms/DetailRow'
 import { ConfirmModal } from '@/components/molecules/ConfirmModal'
 import { useVisitorStore } from '@/store/visitorStore'
-
-const DATE_TIME_FORMAT = new Intl.DateTimeFormat('es', {
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: true,
-})
-
-function DetailRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col gap-1">
-      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        {label}
-      </span>
-      <span className="font-medium">{value || '—'}</span>
-    </div>
-  )
-}
+import { formatDateTime } from '@/lib/date-utils'
 
 export function VisitorDetail() {
   const { id } = useParams<{ id: string }>()
@@ -54,7 +36,7 @@ export function VisitorDetail() {
     )
   }
 
-  const entryDateTime = DATE_TIME_FORMAT.format(new Date(visitor.createdAt))
+  const entryDateTime = formatDateTime(visitor.createdAt)
 
   const handleConfirmCheckout = () => {
     checkOutVisitor(visitor.id)

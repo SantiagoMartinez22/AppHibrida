@@ -1,27 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { PageHeader } from '@/components/templates/PageHeader'
 import { StatusBadge } from '@/components/atoms/StatusBadge'
+import { DetailRow } from '@/components/atoms/DetailRow'
 import { useVisitorStore } from '@/store/visitorStore'
-
-const DATE_TIME_FORMAT = new Intl.DateTimeFormat('es', {
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: true,
-})
-
-function DetailRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col gap-1">
-      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        {label}
-      </span>
-      <span className="font-medium">{value || '—'}</span>
-    </div>
-  )
-}
+import { formatDateTime } from '@/lib/date-utils'
 
 export function AdminVisitorDetail() {
   const { id } = useParams<{ id: string }>()
@@ -48,7 +30,7 @@ export function AdminVisitorDetail() {
     )
   }
 
-  const entryDateTime = DATE_TIME_FORMAT.format(new Date(visitor.createdAt))
+  const entryDateTime = formatDateTime(visitor.createdAt)
 
   return (
     <main className="min-h-screen bg-background">

@@ -7,6 +7,7 @@ import { BottomNavBar } from '@/components/templates/BottomNavBar'
 import { useVisitorStore } from '@/store/visitorStore'
 import { useHandoverStore } from '@/store/handoverStore'
 import { cn } from '@/lib/utils'
+import { sortByDateDesc, formatDateTime } from '@/lib/date-utils'
 
 export function AdminDashboard() {
   const navigate = useNavigate()
@@ -16,7 +17,7 @@ export function AdminDashboard() {
   // Get last 5 visitor activities (sorted by creation date, most recent first)
   const recentActivities = useMemo(() => {
     return [...visitors]
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort(sortByDateDesc)
       .slice(0, 5)
   }, [visitors])
 
@@ -90,7 +91,7 @@ export function AdminDashboard() {
                     {handover.fromUser} → {handover.toUser || 'Siguiente vigilante (por autenticación)'}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {new Date(handover.deliveredAt).toLocaleString('es-CO')}
+                    {formatDateTime(handover.deliveredAt)}
                   </p>
                 </div>
               ))
