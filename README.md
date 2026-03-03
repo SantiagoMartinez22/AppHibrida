@@ -231,4 +231,6 @@ Los datos se guardan en **localStorage** mediante Zustand:
 ## Licencia
 
 Proyecto privado. 
+Trabajo de clase.
+
 
