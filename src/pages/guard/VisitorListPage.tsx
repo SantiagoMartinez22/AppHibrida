@@ -18,7 +18,12 @@ export function VisitorListPage() {
     const q = search.trim().toLowerCase()
     let list = tab === 'active'
       ? visitors.filter((v) => v.status === 'active')
-      : visitors.filter((v) => v.status === 'departed')
+      : [...visitors]
+
+    if (tab === 'history') {
+      list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    }
+
     if (q) {
       list = list.filter(
         (v) =>
@@ -30,7 +35,7 @@ export function VisitorListPage() {
     return list
   }, [visitors, tab, search])
 
-  const title = tab === 'active' ? 'Visitantes Activos' : 'Historial Visitantes'
+  const title = tab === 'active' ? 'Visitantes Activos' : 'Historial de Registros'
 
   return (
     <main className="min-h-screen bg-background pb-28 md:pb-8 md:pt-24">

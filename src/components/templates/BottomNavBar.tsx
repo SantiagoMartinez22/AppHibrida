@@ -42,13 +42,16 @@ export function BottomNavBar() {
 
   // Generate role-specific navigation items
   const navItems: NavItem[] = useMemo(() => [
-    { icon: FiHome, path: '/', label: 'Inicio' },
+    { icon: FiHome, path: rolePrefix, label: 'Inicio' },
     { icon: FiList, path: `${rolePrefix}/visitors`, label: 'Visitantes' },
     { icon: FiLogOut, onClick: handleLogout, label: 'Salir' },
   ], [rolePrefix])
 
   const isActive = (path?: string) => {
     if (!path) return false
+    if (path === rolePrefix) {
+      return location.pathname === path || location.pathname === `${rolePrefix}/register`
+    }
     if (path.endsWith('/visitors')) return location.pathname.startsWith(path)
     return location.pathname === path
   }

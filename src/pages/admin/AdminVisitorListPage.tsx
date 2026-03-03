@@ -21,8 +21,12 @@ export function AdminVisitorListPage() {
     let list = tab === 'active'
       ? visitors.filter((v) => v.status === 'active')
       : tab === 'history'
-      ? visitors.filter((v) => v.status === 'departed')
+      ? [...visitors]
       : []
+
+    if (tab === 'history') {
+      list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    }
     
     if (q && tab !== 'stats') {
       list = list.filter(
@@ -35,7 +39,11 @@ export function AdminVisitorListPage() {
     return list
   }, [visitors, tab, search])
 
-  const title = 'Visitantes Activos'
+  const title = tab === 'active'
+    ? 'Visitantes Activos'
+    : tab === 'history'
+    ? 'Historial de Registros'
+    : 'Estadísticas de Visitantes'
 
   return (
     <main className="min-h-screen bg-background pb-28 md:pb-8 md:pt-24">
