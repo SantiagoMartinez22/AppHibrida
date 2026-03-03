@@ -2,7 +2,7 @@ import { forwardRef, type InputHTMLAttributes } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { cn } from '@/lib/utils'
 
-export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {}
+export type SearchInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>
 
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   ({ className, placeholder = 'Buscar...', ...props }, ref) => {

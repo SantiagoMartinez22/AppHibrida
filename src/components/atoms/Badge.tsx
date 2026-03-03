@@ -1,7 +1,7 @@
 import { type HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
-export interface BadgeProps extends HTMLAttributes<HTMLDivElement> {}
+export type BadgeProps = HTMLAttributes<HTMLDivElement>
 
 export function Badge({ className, ...props }: BadgeProps) {
   return (
