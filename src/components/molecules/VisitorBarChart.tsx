@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import type { VisitorRecord } from '@/types'
 import { cn } from '@/lib/utils'
+import { toLocalDateKey } from '@/lib/date-utils'
+import { DEFAULT_LOCALE, CHART_Y_DIVISIONS } from '@/constants'
 
 export interface VisitorBarChartProps {
   visitors: VisitorRecord[]
@@ -13,13 +15,6 @@ interface DayData {
   count: number
   dayLabel: string
   dayNumber: number
-}
-
-function toLocalDateKey(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
 }
 
 export function VisitorBarChart({
@@ -57,7 +52,7 @@ export function VisitorBarChart({
       }
     })
 
-    const dayFormatter = new Intl.DateTimeFormat('es-CO', { weekday: 'short' })
+    const dayFormatter = new Intl.DateTimeFormat(DEFAULT_LOCALE, { weekday: 'short' })
     const data: DayData[] = []
     const iter = new Date(start)
     while (iter <= end) {
@@ -75,9 +70,9 @@ export function VisitorBarChart({
   }, [visitors, dateRange])
 
   const maxCount = Math.max(...chartData.map((d) => d.count), 0)
-  const yMax = Math.max(4, maxCount)
-  const yStep = Math.max(1, Math.ceil(yMax / 4))
-  const chartMax = yStep * 4
+  const yMax = Math.max(CHART_Y_DIVISIONS, maxCount)
+  const yStep = Math.max(1, Math.ceil(yMax / CHART_Y_DIVISIONS))
+  const chartMax = yStep * CHART_Y_DIVISIONS
   const yTicks = [chartMax, chartMax - yStep, chartMax - yStep * 2, chartMax - yStep * 3, 0]
   const activeCount = visitors.filter((v) => v.status === 'active').length
   const departedCount = visitors.filter((v) => v.status === 'departed').length
@@ -88,7 +83,7 @@ export function VisitorBarChart({
     const [toYear, toMonth, toDay] = chartData[chartData.length - 1].date.split('-').map(Number)
     const from = new Date(fromYear, fromMonth - 1, fromDay)
     const to = new Date(toYear, toMonth - 1, toDay)
-    const rangeFormatter = new Intl.DateTimeFormat('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    const rangeFormatter = new Intl.DateTimeFormat(DEFAULT_LOCALE, { day: '2-digit', month: '2-digit', year: 'numeric' })
     return `${rangeFormatter.format(from)} - ${rangeFormatter.format(to)}`
   }, [chartData])
 

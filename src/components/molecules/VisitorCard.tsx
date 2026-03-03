@@ -8,11 +8,7 @@ import { ConfirmModal } from '@/components/molecules/ConfirmModal'
 import { useVisitorStore } from '@/store/visitorStore'
 import type { VisitorRecord } from '@/types'
 import { cn } from '@/lib/utils'
-
-const TIME_FORMAT = new Intl.DateTimeFormat('es', {
-  hour: '2-digit',
-  minute: '2-digit',
-})
+import { formatTime } from '@/lib/date-utils'
 
 export interface VisitorCardProps {
   visitor: VisitorRecord
@@ -31,7 +27,7 @@ export function VisitorCard({
   const checkOutVisitor = useVisitorStore((s) => s.checkOutVisitor)
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false)
 
-  const entryTime = TIME_FORMAT.format(new Date(visitor.createdAt))
+  const entryTime = formatTime(visitor.createdAt)
 
   const handleCheckout = (e: React.MouseEvent) => {
     e.stopPropagation()

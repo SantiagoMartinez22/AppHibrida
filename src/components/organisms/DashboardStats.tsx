@@ -1,20 +1,7 @@
 import { useMemo } from 'react'
 import { StatCard } from '@/components/molecules/StatCard'
 import { useVisitorStore } from '@/store/visitorStore'
-
-function isToday(iso: string): boolean {
-  const d = new Date(iso)
-  const today = new Date()
-  return d.getFullYear() === today.getFullYear() &&
-    d.getMonth() === today.getMonth() &&
-    d.getDate() === today.getDate()
-}
-
-function isLastHour(iso: string): boolean {
-  const d = new Date(iso).getTime()
-  const now = Date.now()
-  return now - d <= 60 * 60 * 1000
-}
+import { isToday, isWithinLastHour } from '@/lib/date-utils'
 
 export function DashboardStats() {
   const visitors = useVisitorStore((s) => s.visitors)
@@ -22,7 +9,7 @@ export function DashboardStats() {
   const { todayCount, activeCount, lastHourCount } = useMemo(() => {
     const today = visitors.filter((v) => isToday(v.createdAt))
     const active = visitors.filter((v) => v.status === 'active')
-    const lastHour = visitors.filter((v) => isLastHour(v.createdAt))
+    const lastHour = visitors.filter((v) => isWithinLastHour(v.createdAt))
     return {
       todayCount: today.length,
       activeCount: active.length,
