@@ -98,9 +98,13 @@ export function GuardDashboard() {
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
             Entrega de turno
           </p>
-          <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm space-y-3">
+          <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm space-y-3 ring-1 ring-primary/10">
+            <p className="inline-flex w-fit items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
+              Acción de cierre formal
+            </p>
             <p className="text-sm text-muted-foreground">
-              Registra el cierre del turno actual. El siguiente vigilante iniciará sesión con su propio usuario.
+              Registra oficialmente el cierre del turno actual en la bitácora. Si solo deseas salir sin registrar entrega, usa
+              {' '}<span className="font-semibold text-foreground">Salir</span> en la barra de navegación.
             </p>
             <AppButton type="button" onClick={handleDeliverTurn}>
               Registrar entrega de turno
@@ -111,7 +115,7 @@ export function GuardDashboard() {
       <ConfirmModal
         open={isHandoverModalOpen}
         title="Entrega de turno"
-        description="¿Seguro que quiere registrar la entrega de turno?"
+        description="Esta acción registra la entrega en bitácora y cierra la sesión actual. ¿Desea continuar?"
         confirmLabel="Sí, entregar"
         cancelLabel="Cancelar"
         onConfirm={confirmDeliverTurn}

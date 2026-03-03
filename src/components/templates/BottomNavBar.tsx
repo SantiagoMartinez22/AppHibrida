@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { FiHome, FiList, FiBookOpen, FiLogOut } from 'react-icons/fi'
+import { FiHome, FiList, FiBookOpen, FiLogOut, FiShield, FiUserCheck } from 'react-icons/fi'
 import { cn } from '@/lib/utils'
 import { useMemo, useState } from 'react'
 import { useAuthStore } from '@/store/authStore'
@@ -16,11 +16,13 @@ export function BottomNavBar() {
   const navigate = useNavigate()
   const location = useLocation()
   const logout = useAuthStore((s) => s.logout)
+  const session = useAuthStore((s) => s.session)
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
   // Detect current role based on URL
   const isAdmin = location.pathname.startsWith('/admin')
   const rolePrefix = isAdmin ? '/admin' : '/guard'
+  const roleLabel = isAdmin ? 'Administrador' : 'Vigilante'
 
   const handleLogout = () => {
     setIsLogoutModalOpen(true)
@@ -30,7 +32,9 @@ export function BottomNavBar() {
     logout({
       type: 'info',
       title: 'Sesión cerrada',
-      description: 'Hasta pronto',
+      description: isAdmin
+        ? 'Hasta pronto'
+        : 'Cierre de sesión sin entrega de turno',
     })
     setIsLogoutModalOpen(false)
     navigate('/', { replace: true })
@@ -106,10 +110,15 @@ export function BottomNavBar() {
             aria-label="Ir al inicio"
           >
             <FiBookOpen className="h-4 w-4 text-primary" aria-hidden />
-            VigiLog
+            VigiLog Control
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-card/85 px-2.5 py-1 text-xs font-semibold text-foreground">
+              {isAdmin ? <FiUserCheck className="h-3.5 w-3.5 text-primary" aria-hidden /> : <FiShield className="h-3.5 w-3.5 text-primary" aria-hidden />}
+              {roleLabel}
+              {session?.username ? ` · ${session.username}` : ''}
+            </span>
             {navItems.map((item) => {
               const Icon = item.icon
               const active = isActive(item.path)
@@ -139,7 +148,9 @@ export function BottomNavBar() {
       <ConfirmModal
         open={isLogoutModalOpen}
         title="Cerrar sesión"
-        description="¿Seguro que quiere cerrar sesión?"
+        description={isAdmin
+          ? '¿Seguro que quiere cerrar sesión?'
+          : '¿Seguro que quiere cerrar sesión sin entregar turno?'}
         confirmLabel="Sí, salir"
         cancelLabel="Cancelar"
         onConfirm={confirmLogout}
