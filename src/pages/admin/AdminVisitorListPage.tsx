@@ -22,13 +22,13 @@ export function AdminVisitorListPage() {
     let list = tab === 'active'
       ? visitors.filter((v) => v.status === 'active')
       : tab === 'history'
-      ? [...visitors]
-      : []
+        ? [...visitors]
+        : []
 
     if (tab === 'history') {
       list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     }
-    
+
     if (q && tab !== 'stats') {
       list = list.filter(
         (v) =>
@@ -43,8 +43,8 @@ export function AdminVisitorListPage() {
   const title = tab === 'active'
     ? 'Visitantes Activos'
     : tab === 'history'
-    ? 'Historial de Registros'
-    : 'Estadísticas de Visitantes'
+      ? 'Historial de Registros'
+      : 'Estadísticas de Visitantes'
 
   const statsDateRange = useMemo(() => {
     const selected = new Date(statsDate)
@@ -84,7 +84,7 @@ export function AdminVisitorListPage() {
             onChange={setTab}
           />
         </section>
-        
+
         {tab === 'stats' ? (
           <div className="grid gap-4 md:grid-cols-2">
             <VisitorBarChart visitors={visitors} dateRange={statsDateRange} />

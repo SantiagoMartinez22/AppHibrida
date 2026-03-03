@@ -42,7 +42,7 @@ export function VisitorBarChart({
 
     const daysMap = new Map<string, number>()
     const current = new Date(start)
-    
+
     while (current <= end) {
       const dateKey = toLocalDateKey(current)
       daysMap.set(dateKey, 0)

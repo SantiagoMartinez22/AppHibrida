@@ -21,9 +21,9 @@ export function VisitorForm() {
   const addVisitor = useVisitorStore((s) => s.addVisitor)
   const session = useAuthStore((s) => s.session)
   const [form, setForm] = useState({ ...INITIAL_FORM, registeredBy: session?.username ?? '' })
-    useEffect(() => {
-      setForm((prev) => ({ ...prev, registeredBy: session?.username ?? '' }))
-    }, [session?.username])
+  useEffect(() => {
+    setForm((prev) => ({ ...prev, registeredBy: session?.username ?? '' }))
+  }, [session?.username])
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [saveError, setSaveError] = useState(false)

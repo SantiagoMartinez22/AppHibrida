@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Toaster } from 'sonner'
 import './index.scss'
 import App from './App'
+import { initTheme } from '@/lib/theme'
 
 const PERSIST_KEYS = ['vigilog-auth', 'vigilog-visitors', 'vigilog-handovers']
 
@@ -20,6 +21,7 @@ function repairPersistedStorage(): void {
 }
 
 repairPersistedStorage()
+initTheme()
 
 interface AppErrorBoundaryState {
   hasError: boolean
