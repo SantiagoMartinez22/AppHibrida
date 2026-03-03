@@ -5,11 +5,13 @@ import { DashboardStats } from '@/components/organisms/DashboardStats'
 import { RecentActivityCard } from '@/components/molecules/RecentActivityCard'
 import { BottomNavBar } from '@/components/templates/BottomNavBar'
 import { useVisitorStore } from '@/store/visitorStore'
+import { useHandoverStore } from '@/store/handoverStore'
 import { cn } from '@/lib/utils'
 
 export function AdminDashboard() {
   const navigate = useNavigate()
   const visitors = useVisitorStore((s) => s.visitors)
+  const handovers = useHandoverStore((s) => s.handovers)
 
   // Get last 5 visitor activities (sorted by creation date, most recent first)
   const recentActivities = useMemo(() => {
@@ -63,6 +65,26 @@ export function AdminDashboard() {
             Resumen del día
           </p>
           <DashboardStats />
+        </section>
+
+        <section className="mt-6">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
+            Entregas de turno recientes
+          </p>
+          <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm space-y-2">
+            {handovers.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No hay entregas de turno registradas.</p>
+            ) : (
+              handovers.slice(0, 3).map((handover) => (
+                <div key={handover.id} className="rounded-md bg-muted/40 px-3 py-2">
+                  <p className="text-sm font-medium">{handover.fromUser} → {handover.toUser}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(handover.deliveredAt).toLocaleString('es-CO')}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
         </section>
       </div>
       <BottomNavBar />

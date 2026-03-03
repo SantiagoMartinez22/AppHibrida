@@ -5,6 +5,7 @@ import { FormField } from '@/components/molecules/FormField'
 import { AlertBanner } from '@/components/molecules/AlertBanner'
 import { AppButton } from '@/components/atoms/AppButton'
 import { useVisitorStore } from '@/store/visitorStore'
+import { useAuthStore } from '@/store/authStore'
 
 const INITIAL_FORM = {
   registeredBy: '',
@@ -18,7 +19,8 @@ type FormErrors = Partial<Record<keyof typeof INITIAL_FORM, string>>
 export function VisitorForm() {
   const navigate = useNavigate()
   const addVisitor = useVisitorStore((s) => s.addVisitor)
-  const [form, setForm] = useState(INITIAL_FORM)
+  const session = useAuthStore((s) => s.session)
+  const [form, setForm] = useState({ ...INITIAL_FORM, registeredBy: session?.username ?? '' })
   const [errors, setErrors] = useState<FormErrors>({})
   const [saveError, setSaveError] = useState(false)
 
@@ -48,9 +50,9 @@ export function VisitorForm() {
         observation: form.observation.trim() || undefined,
       })
       toast.success('Registro guardado correctamente')
-        setForm(INITIAL_FORM)
-        setErrors({})
-        navigate('/guard')
+      setForm(INITIAL_FORM)
+      setErrors({})
+      navigate('/guard')
     } catch {
       setSaveError(true)
     }
