@@ -1,10 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { AppStatusMessage, AuthSession, Role } from '@/types'
-
-function isValidRole(role: unknown): role is Role {
-    return role === 'guard' || role === 'admin'
-}
+import { AUTH_STORAGE_KEY, PIN_REGEX } from '@/constants'
+import { isValidRole } from '@/lib/visitor-utils'
 
 interface LoginInput {
     role: Role
@@ -20,11 +18,11 @@ interface AuthState {
     clearStatusMessage: () => void
 }
 
-const AUTH_STORAGE_KEY = 'vigilog-auth'
+export { AUTH_STORAGE_KEY }
 
 function validateLoginInput(input: LoginInput): string | null {
     if (!input.username.trim()) return 'El usuario es obligatorio'
-    if (!/^\d{4}$/.test(input.pin.trim())) return 'El PIN debe tener 4 dígitos'
+    if (!PIN_REGEX.test(input.pin.trim())) return 'El PIN debe tener 4 dígitos'
     return null
 }
 

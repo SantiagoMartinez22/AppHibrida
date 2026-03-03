@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { VisitorRecord } from '@/types'
+import { VISITORS_STORAGE_KEY } from '@/constants'
 
 interface VisitorState {
   visitors: VisitorRecord[]
@@ -8,7 +9,7 @@ interface VisitorState {
   checkOutVisitor: (id: string) => void
 }
 
-const STORAGE_KEY = 'vigilog-visitors'
+export { VISITORS_STORAGE_KEY }
 
 function migrateVisitor(v: VisitorRecord & { status?: VisitorRecord['status']; checkoutAt?: string }): VisitorRecord {
   return {
@@ -43,7 +44,7 @@ export const useVisitorStore = create<VisitorState>()(
       },
     }),
     {
-      name: STORAGE_KEY,
+      name: VISITORS_STORAGE_KEY,
       migrate: (persistedState: unknown) => {
         const s = persistedState as { state?: { visitors?: unknown[] } }
         if (s?.state?.visitors) {
