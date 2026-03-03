@@ -11,12 +11,15 @@ export function PageHeader({ title, onBack, className }: PageHeaderProps) {
   return (
     <header
       className={cn(
-        'flex items-center gap-3 pb-4',
+        'mb-4 flex items-center gap-3 rounded-xl border border-border/70 bg-card/80 px-3 py-3 shadow-sm',
         className
       )}
     >
       <BackButton onClick={onBack} />
-      <h1 className="text-xl font-bold">{title}</h1>
+      <div className="min-w-0">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">VigiLog</p>
+        <h1 className="truncate text-xl font-bold leading-tight">{title}</h1>
+      </div>
     </header>
   )
 }

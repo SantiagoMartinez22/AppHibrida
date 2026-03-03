@@ -1,52 +1,54 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FiPlus, FiChevronRight } from 'react-icons/fi'
 import { toast } from 'sonner'
 import { DashboardStats } from '@/components/organisms/DashboardStats'
 import { BottomNavBar } from '@/components/templates/BottomNavBar'
 import { AppButton } from '@/components/atoms/AppButton'
-import { AppInput } from '@/components/atoms/AppInput'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
 import { useHandoverStore } from '@/store/handoverStore'
 
 export function GuardDashboard() {
   const navigate = useNavigate()
-  const [handoverUser, setHandoverUser] = useState('')
-  const [handoverError, setHandoverError] = useState<string | null>(null)
 
   const session = useAuthStore((s) => s.session)
   const logout = useAuthStore((s) => s.logout)
   const deliverTurn = useHandoverStore((s) => s.deliverTurn)
 
   const handleDeliverTurn = () => {
-    const nextUser = handoverUser.trim()
-    if (!nextUser) {
-      setHandoverError('Indica el usuario que recibe el turno')
-      return
-    }
-
     if (!session?.username) {
-      setHandoverError('No hay un vigilante autenticado')
+      toast.error('No hay un vigilante autenticado')
       return
     }
 
-    deliverTurn({ fromUser: session.username, toUser: nextUser })
-    logout({
-      type: 'success',
-      title: 'Turno entregado correctamente',
-      description: `Turno transferido a ${nextUser}`,
+    toast('Entrega de turno', {
+      description: '¿Seguro que quiere entregar el turno?',
+      action: {
+        label: 'Sí, entregar',
+        onClick: () => {
+          deliverTurn({ fromUser: session.username })
+          logout({
+            type: 'success',
+            title: 'Turno entregado correctamente',
+            description: 'La sesión se cerró para permitir el siguiente ingreso',
+          })
+          toast.success('Turno entregado correctamente')
+          navigate('/', { replace: true })
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => undefined,
+      },
     })
-    toast.success(`Turno entregado a ${nextUser}`)
-    navigate('/', { replace: true })
   }
 
   return (
-    <main className="min-h-screen bg-background pb-20">
-      <div className="max-w-lg mx-auto px-4 py-6">
+    <main className="min-h-screen bg-background pb-28 md:pb-8 md:pt-24">
+      <div className="max-w-5xl mx-auto px-4 py-6">
         <p className="text-sm text-muted-foreground">Buenos días</p>
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="mt-1 text-sm text-muted-foreground">
           Vigilante activo: <span className="font-medium text-foreground">{session?.username ?? '—'}</span>
         </p>
 
@@ -96,17 +98,11 @@ export function GuardDashboard() {
             Entrega de turno
           </p>
           <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm space-y-3">
-            <AppInput
-              placeholder="Usuario que recibe el turno"
-              value={handoverUser}
-              onChange={(e) => {
-                setHandoverUser(e.target.value)
-                if (handoverError) setHandoverError(null)
-              }}
-            />
-            {handoverError && <p className="text-sm text-destructive">{handoverError}</p>}
+            <p className="text-sm text-muted-foreground">
+              Registra el cierre del turno actual. El siguiente vigilante iniciará sesión con su propio usuario.
+            </p>
             <AppButton type="button" onClick={handleDeliverTurn}>
-              Entregar turno
+              Registrar entrega de turno
             </AppButton>
           </div>
         </section>

@@ -21,8 +21,8 @@ export function AdminDashboard() {
   }, [visitors])
 
   return (
-    <main className="min-h-screen bg-background pb-20">
-      <div className="max-w-lg mx-auto px-4 py-6">
+    <main className="min-h-screen bg-background pb-28 md:pb-8 md:pt-24">
+      <div className="max-w-5xl mx-auto px-4 py-6">
         <p className="text-sm text-muted-foreground">Buenos días</p>
         <h1 className="text-2xl font-bold">Dashboard</h1>
 
@@ -77,7 +77,9 @@ export function AdminDashboard() {
             ) : (
               handovers.slice(0, 3).map((handover) => (
                 <div key={handover.id} className="rounded-md bg-muted/40 px-3 py-2">
-                  <p className="text-sm font-medium">{handover.fromUser} → {handover.toUser}</p>
+                  <p className="text-sm font-medium">
+                    {handover.fromUser} → {handover.toUser || 'Siguiente vigilante (por autenticación)'}
+                  </p>
                   <p className="text-xs text-muted-foreground">
                     {new Date(handover.deliveredAt).toLocaleString('es-CO')}
                   </p>

@@ -21,7 +21,7 @@ export function TabToggle<T extends string>({
   return (
     <div
       className={cn(
-        'inline-flex rounded-full border border-input bg-muted/30 p-0.5',
+        'flex w-full rounded-full border border-input bg-muted/30 p-0.5',
         className
       )}
       role="tablist"
@@ -34,7 +34,7 @@ export function TabToggle<T extends string>({
           aria-selected={value === opt.value}
           onClick={() => onChange(opt.value)}
           className={cn(
-            'rounded-full px-4 py-2 text-sm font-medium transition-colors',
+            'flex-1 rounded-full px-4 py-2 text-center text-sm font-medium transition-colors',
             value === opt.value
               ? 'bg-primary text-primary-foreground'
               : 'bg-transparent text-muted-foreground hover:text-foreground'

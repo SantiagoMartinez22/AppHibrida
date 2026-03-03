@@ -10,12 +10,12 @@ export function StatCard({ value, label, className }: StatCardProps) {
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center rounded-lg border bg-card p-4 text-card-foreground shadow-sm min-w-0 flex-1',
+        'flex min-w-0 flex-1 flex-col items-center justify-center rounded-lg border bg-card p-4 text-center text-card-foreground shadow-sm',
         className
       )}
     >
-      <span className="text-2xl font-bold">{value}</span>
-      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="w-full text-2xl font-bold leading-none sm:text-3xl">{value}</span>
+      <span className="mt-1 w-full text-xs font-medium uppercase tracking-wide text-muted-foreground sm:text-sm sm:normal-case sm:tracking-normal">{label}</span>
     </div>
   )
 }

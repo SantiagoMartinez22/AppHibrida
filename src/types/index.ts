@@ -22,7 +22,7 @@ export interface AuthSession {
 export interface ShiftHandover {
   id: string
   fromUser: string
-  toUser: string
+  toUser?: string
   deliveredAt: string
 }
 

@@ -38,33 +38,33 @@ export function AdminVisitorListPage() {
   const title = 'Visitantes Activos'
 
   return (
-    <main className="min-h-screen bg-background pb-20">
-      <div className="max-w-lg mx-auto px-4 py-6">
+    <main className="min-h-screen bg-background pb-28 md:pb-8 md:pt-24">
+      <div className="max-w-5xl mx-auto px-4 py-6">
         <PageHeader title={title} />
-        <SearchInput
-          placeholder="Buscar..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="mb-4"
-        />
-        <ThreeTabToggle<TabValue>
-          options={[
-            { value: 'active', label: 'Activos' },
-            { value: 'history', label: 'Historial' },
-            { value: 'stats', label: 'Estadísticas' },
-          ]}
-          value={tab}
-          onChange={setTab}
-          className="mb-4"
-        />
+        <section className="mx-auto mb-4 w-full max-w-3xl space-y-4">
+          <SearchInput
+            placeholder="Buscar..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <ThreeTabToggle<TabValue>
+            options={[
+              { value: 'active', label: 'Activos' },
+              { value: 'history', label: 'Historial' },
+              { value: 'stats', label: 'Estadísticas' },
+            ]}
+            value={tab}
+            onChange={setTab}
+          />
+        </section>
         
         {tab === 'stats' ? (
-          <div className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
             <VisitorBarChart visitors={visitors} />
             <MonthCalendar />
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
             {filtered.map((visitor) => (
               <VisitorCard
                 key={visitor.id}
@@ -74,7 +74,7 @@ export function AdminVisitorListPage() {
               />
             ))}
             {filtered.length === 0 && (
-              <p className="text-center text-muted-foreground py-8">
+              <p className="col-span-full py-8 text-center text-muted-foreground">
                 {search ? 'No hay resultados' : 'No hay visitantes'}
               </p>
             )}

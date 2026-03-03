@@ -6,11 +6,21 @@
     body {
         @apply bg-background text-foreground;
         font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background-image:
+            radial-gradient(circle at 12% 12%, hsl(var(--primary) / 0.1), transparent 28%),
+            radial-gradient(circle at 88% 6%, hsl(var(--accent-foreground) / 0.08), transparent 24%),
+            linear-gradient(to bottom, hsl(var(--background)), hsl(var(--background)));
+        background-attachment: fixed;
+    }
+
+    h1,
+    h2 {
+        letter-spacing: -0.015em;
     }
 }
 
 @layer components {
     .app-surface {
-        @apply rounded-2xl border bg-card text-card-foreground shadow-sm;
+        @apply rounded-2xl border bg-card text-card-foreground shadow-sm ring-1 ring-primary/10;
     }
 }

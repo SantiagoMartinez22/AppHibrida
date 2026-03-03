@@ -4,7 +4,7 @@ import type { ShiftHandover } from '@/types'
 
 interface HandoverState {
     handovers: ShiftHandover[]
-    deliverTurn: (payload: { fromUser: string; toUser: string }) => ShiftHandover
+    deliverTurn: (payload: { fromUser: string; toUser?: string }) => ShiftHandover
 }
 
 const HANDOVER_STORAGE_KEY = 'vigilog-handovers'
@@ -17,7 +17,7 @@ export const useHandoverStore = create<HandoverState>()(
                 const handover: ShiftHandover = {
                     id: crypto.randomUUID(),
                     fromUser: fromUser.trim(),
-                    toUser: toUser.trim(),
+                    toUser: toUser?.trim() || undefined,
                     deliveredAt: new Date().toISOString(),
                 }
 

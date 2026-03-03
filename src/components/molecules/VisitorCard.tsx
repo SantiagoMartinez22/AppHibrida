@@ -43,17 +43,18 @@ export function VisitorCard({
   return (
     <div
       className={cn(
-        'rounded-lg border bg-card p-4 text-card-foreground shadow-sm cursor-pointer hover:bg-accent/50',
+        'app-surface group cursor-pointer p-4 transition-all hover:-translate-y-0.5 hover:bg-accent/50 hover:shadow-md',
         className
       )}
       onClick={handleCardClick}
       role="button"
     >
+      <div className="mb-3 h-1 w-14 rounded-full bg-primary/70" aria-hidden />
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="font-semibold">{visitor.visitorName}</p>
-          <p className="text-sm text-muted-foreground">{visitor.destination}</p>
-          <p className="text-sm text-muted-foreground mt-1">{entryTime}</p>
+          <p className="font-semibold text-foreground">{visitor.visitorName}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{visitor.destination}</p>
+          <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">Entrada {entryTime}</p>
         </div>
         <StatusBadge status={visitor.status} className="shrink-0" />
       </div>
@@ -69,7 +70,7 @@ export function VisitorCard({
       )}
       {!showCheckoutButton && (
         <div className="mt-2 flex justify-end">
-          <FiChevronRight className="h-4 w-4 text-muted-foreground" aria-hidden />
+          <FiChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden />
         </div>
       )}
     </div>
