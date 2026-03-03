@@ -12,3 +12,22 @@ export interface VisitorRecord {
 }
 
 export type Role = 'guard' | 'admin'
+
+export interface AuthSession {
+  role: Role
+  username: string
+  shiftStartedAt: string
+}
+
+export interface ShiftHandover {
+  id: string
+  fromUser: string
+  toUser: string
+  deliveredAt: string
+}
+
+export interface AppStatusMessage {
+  type: 'success' | 'error' | 'info'
+  title: string
+  description?: string
+}
