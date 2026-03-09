@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">VigiLog</string>
+    <string name="title_activity_main">VigiLog</string>
+    <string name="package_name">com.vigilog.app</string>
+    <string name="custom_url_scheme">com.vigilog.app</string>
+</resources>

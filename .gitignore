@@ -5,6 +5,11 @@ node_modules/
 dist/
 build/
 
+# Capacitor / Android / iOS (por si acaso)
+*.apk
+*.aab
+*.ipa
+
 # Env
 .env
 .env.local

@@ -4,7 +4,7 @@
 
 <h1 align="center">VigiLog</h1>
 <p align="center">
-  <strong>Aplicación híbrida (SPA)</strong> para digitalizar el registro de vigilancia en propiedad horizontal.
+  <strong>Aplicación híbrida (PWA + Capacitor)</strong> para digitalizar el registro de vigilancia en propiedad horizontal.
 </p>
 <p align="center">
   Reemplaza el libro físico por un flujo digital de ingreso, registro de visitantes, consulta y entrega de turno.
@@ -38,6 +38,8 @@
 | **Radix UI** | Componentes accesibles (Label, Slot) |
 | **Sonner** | Notificaciones toast |
 | **React Icons** | Iconografía (Feather Icons) |
+| **vite-plugin-pwa** | PWA: manifest, service worker, instalación en móvil/escritorio |
+| **Capacitor** | App nativa: APK (Android), IPA (iOS) |
 
 ---
 
@@ -77,7 +79,7 @@ Abre [http://localhost:5173](http://localhost:5173) en el navegador.
 npm run build
 ```
 
-Genera la carpeta `dist/` con los archivos estáticos listos para desplegar.
+Genera la carpeta `dist/` con los archivos estáticos listos para desplegar (incluye PWA: manifest, service worker, precache).
 
 ### Vista previa del build
 
@@ -86,6 +88,34 @@ npm run preview
 ```
 
 Sirve el build de producción localmente para probar antes de desplegar.
+
+### PWA — Instalar en móvil o escritorio
+
+Tras desplegar la app en HTTPS (o usar `npm run preview` en local), puedes instalarla como PWA:
+
+- **Android / Chrome**: menú → "Instalar aplicación" o "Añadir a pantalla de inicio"
+- **iOS / Safari**: Compartir → "Añadir a pantalla de inicio"
+- **Desktop**: icono de instalación en la barra de direcciones
+
+### App nativa (Capacitor)
+
+Para generar APK (Android) o IPA (iOS):
+
+```bash
+# Android — abre Android Studio con el proyecto
+npm run build:android
+
+# iOS — abre Xcode con el proyecto (solo macOS)
+npm run build:ios
+```
+
+Requiere **Android Studio** (Android) y **Xcode** (iOS, solo macOS). Tras abrir el IDE, genera el APK/AAB o IPA desde el menú de build.
+
+### Regenerar íconos
+
+```bash
+npm run icons
+```
 
 ### Linting
 
@@ -102,7 +132,10 @@ Ejecuta ESLint sobre el código.
 | Script | Comando | Descripción |
 |--------|---------|-------------|
 | `dev` | `npm run dev` | Servidor de desarrollo con HMR |
-| `build` | `npm run build` | Compila TypeScript y genera build de producción |
+| `build` | `npm run build` | Compila TypeScript y genera build de producción (PWA) |
+| `build:android` | `npm run build:android` | Build + sync + abre Android Studio |
+| `build:ios` | `npm run build:ios` | Build + sync + abre Xcode |
+| `icons` | `npm run icons` | Regenera íconos PWA (192, 512, maskable) |
 | `preview` | `npm run preview` | Sirve el build de producción localmente |
 | `lint` | `npm run lint` | Ejecuta ESLint |
 
