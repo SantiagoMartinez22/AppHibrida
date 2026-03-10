@@ -102,6 +102,7 @@ export function VisitorForm() {
             placeholder="Detalle adicional (opcional)"
             value={form.observation}
             onChange={(e) => updateField('observation', e.target.value)}
+            multiline
           />
         </div>
       </div>

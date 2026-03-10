@@ -1,5 +1,6 @@
 export { AppButton } from './AppButton'
 export { AppInput } from './AppInput'
+export { AppTextarea } from './AppTextarea'
 export { Label } from './Label'
 export { Spinner } from './Spinner'
 export { BackButton } from './BackButton'

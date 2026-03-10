@@ -4,6 +4,7 @@ import { TabToggle } from '@/components/molecules/TabToggle'
 import { VisitorCard } from '@/components/molecules/VisitorCard'
 import { VisitorBarChart } from '@/components/molecules/VisitorBarChart'
 import { MonthCalendar } from '@/components/molecules/MonthCalendar'
+import { ExcelToolbar } from '@/components/molecules/ExcelToolbar'
 import { PageHeader } from '@/components/templates/PageHeader'
 import { BottomNavBar } from '@/components/templates/BottomNavBar'
 import { useVisitorStore } from '@/store/visitorStore'
@@ -61,6 +62,7 @@ export function AdminVisitorListPage() {
             value={tab}
             onChange={setTab}
           />
+          {tab !== 'stats' && <ExcelToolbar visitors={visitors} />}
         </section>
 
         {tab === 'stats' ? (
