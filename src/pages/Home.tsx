@@ -53,7 +53,7 @@ export function Home() {
       <button
         type="button"
         onClick={toggleTheme}
-        className="fixed right-4 top-4 inline-flex items-center gap-2 rounded-full border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-accent/70"
+        className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+1rem)] inline-flex items-center gap-2 rounded-full border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-accent/70"
         aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
       >
         {isDark ? <FiSun className="h-4 w-4" /> : <FiMoon className="h-4 w-4" />}
