@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - code_cleaning
-    paths:
-      - 'landing/**'
-      - 'docs/privacy.html'
   workflow_dispatch:
 
 permissions:
