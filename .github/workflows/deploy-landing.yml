@@ -3,7 +3,7 @@ name: Deploy Landing to GitHub Pages
 on:
   push:
     branches:
-      - code_cleaning
+      - main
   workflow_dispatch:
 
 permissions:
