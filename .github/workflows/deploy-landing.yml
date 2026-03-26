@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'landing/**'
+      - 'docs/privacy.html'
   workflow_dispatch:
 
 permissions:
@@ -30,10 +31,15 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Prepare deploy folder
+        run: |
+          cp -r landing _site
+          cp docs/privacy.html _site/privacy.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: landing
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
