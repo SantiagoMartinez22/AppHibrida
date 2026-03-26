@@ -30,8 +30,11 @@ jobs:
 
       - name: Prepare deploy folder
         run: |
-          cp -r landing _site
+          mkdir -p _site
+          cp -r landing/. _site/
           cp docs/privacy.html _site/privacy.html
+          echo "--- Files in _site ---"
+          ls -la _site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
