@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VigiLog - Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F0F4F8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .page {
+      display: flex;
+      width: 100%;
+      max-width: 1100px;
+      min-height: 600px;
+      gap: 48px;
+      align-items: center;
+    }
+    /* Dark mode toggle */
+    .theme-toggle {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #334155;
+      cursor: pointer;
+    }
+    /* Left panel */
+    .brand-panel {
+      flex: 0 0 42%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      background: #E0E6F0;
+      border-radius: 9999px;
+      width: fit-content;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #4A4AFB 0%, #6366F1 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-icon svg {
+      width: 18px;
+      height: 18px;
+      color: white;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1E293B;
+    }
+    .brand-title {
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #1E293B;
+      max-width: 320px;
+    }
+    .brand-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #64748B;
+      max-width: 380px;
+    }
+    /* Right panel - Login card */
+    .login-panel {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+    }
+    .role-toggle {
+      display: flex;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #E2E8F0;
+      margin-bottom: 16px;
+    }
+    .role-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .role-btn.active {
+      background: #4A4AFB;
+      color: white;
+    }
+    .role-btn.inactive {
+      background: white;
+      color: #64748B;
+    }
+    .role-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #64748B;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 14px;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      background: white;
+      font-family: inherit;
+    }
+    .form-input::placeholder {
+      color: #94A3B8;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      background: #4A4AFB;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <button type="button" class="theme-toggle" aria-label="Modo oscuro">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+    Oscuro
+  </button>
+
+  <div class="page">
+    <div class="brand-panel">
+      <div class="logo-badge">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <span class="logo-text">VigiLog</span>
+      </div>
+      <h1 class="brand-title">Registro de vigilancia digital</h1>
+      <p class="brand-desc">Controla ingresos, consulta visitantes y realiza entrega de turno con un flujo claro para vigilante y administrador.</p>
+    </div>
+
+    <div class="login-panel">
+      <div class="login-card">
+        <div class="role-toggle">
+          <button type="button" class="role-btn active">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            Vigilante
+          </button>
+          <button type="button" class="role-btn inactive">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Admin
+          </button>
+        </div>
+
+        <p class="subtitle">Ingreso Vigilante</p>
+
+        <form>
+          <div class="form-group">
+            <label class="form-label" for="usuario">Usuario</label>
+            <input type="text" id="usuario" class="form-input" placeholder="Ej: vigilante.noche" autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pin">PIN (4 dígitos)</label>
+            <input type="password" id="pin" class="form-input" placeholder="••••" maxlength="4" inputmode="numeric" autocomplete="current-password">
+          </div>
+          <button type="submit" class="submit-btn">Continuar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

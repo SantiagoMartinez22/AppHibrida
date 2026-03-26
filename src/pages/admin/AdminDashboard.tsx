@@ -7,6 +7,7 @@ import { BottomNavBar } from '@/components/templates/BottomNavBar'
 import { useVisitorStore } from '@/store/visitorStore'
 import { useHandoverStore } from '@/store/handoverStore'
 import { cn } from '@/lib/utils'
+import { sortByDateDesc, formatDateTime } from '@/lib/date-utils'
 
 export function AdminDashboard() {
   const navigate = useNavigate()
@@ -16,15 +17,24 @@ export function AdminDashboard() {
   // Get last 5 visitor activities (sorted by creation date, most recent first)
   const recentActivities = useMemo(() => {
     return [...visitors]
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort(sortByDateDesc)
       .slice(0, 5)
   }, [visitors])
 
   return (
     <main className="min-h-screen bg-background pb-28 md:pb-8 md:pt-24">
       <div className="max-w-5xl mx-auto px-4 py-6">
-        <p className="text-sm text-muted-foreground">Buenos días</p>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <div className="flex items-center gap-3">
+          <img
+            src="/vigilante_gordo.webp"
+            alt="Vigilante VigiLog"
+            className="h-20 w-auto max-w-[130px] shrink-0 object-contain mix-blend-multiply saturate-110 dark:rounded-xl dark:mix-blend-normal dark:contrast-125 dark:brightness-110 dark:drop-shadow-md"
+          />
+          <div>
+            <p className="text-sm text-muted-foreground">Buenos días</p>
+            <h1 className="text-2xl font-bold">Dashboard</h1>
+          </div>
+        </div>
 
         <section className="mt-8">
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
@@ -81,7 +91,7 @@ export function AdminDashboard() {
                     {handover.fromUser} → {handover.toUser || 'Siguiente vigilante (por autenticación)'}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {new Date(handover.deliveredAt).toLocaleString('es-CO')}
+                    {formatDateTime(handover.deliveredAt)}
                   </p>
                 </div>
               ))

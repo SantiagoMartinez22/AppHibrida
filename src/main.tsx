@@ -3,8 +3,12 @@ import { createRoot } from 'react-dom/client'
 import { Toaster } from 'sonner'
 import './index.scss'
 import App from './App'
+import { initTheme } from '@/lib/theme'
+import { AUTH_STORAGE_KEY } from '@/store/authStore'
+import { VISITORS_STORAGE_KEY } from '@/store/visitorStore'
+import { HANDOVERS_STORAGE_KEY } from '@/store/handoverStore'
 
-const PERSIST_KEYS = ['vigilog-auth', 'vigilog-visitors', 'vigilog-handovers']
+const PERSIST_KEYS = [AUTH_STORAGE_KEY, VISITORS_STORAGE_KEY, HANDOVERS_STORAGE_KEY]
 
 function repairPersistedStorage(): void {
   for (const key of PERSIST_KEYS) {
@@ -20,6 +24,7 @@ function repairPersistedStorage(): void {
 }
 
 repairPersistedStorage()
+initTheme()
 
 interface AppErrorBoundaryState {
   hasError: boolean

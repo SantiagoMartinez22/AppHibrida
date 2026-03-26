@@ -1,16 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FiBookOpen, FiShield, FiUserCheck, FiX } from 'react-icons/fi'
+import { FiMoon, FiShield, FiSun, FiUserCheck, FiX } from 'react-icons/fi'
 import { AppButton } from '@/components/atoms/AppButton'
 import { AppInput } from '@/components/atoms/AppInput'
 import { Label } from '@/components/atoms/Label'
+import { useTheme } from '@/hooks/useTheme'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
+import { isValidRole } from '@/lib/visitor-utils'
 import type { Role } from '@/types'
-
-function isValidRole(role: unknown): role is Role {
-  return role === 'guard' || role === 'admin'
-}
 
 export function Home() {
   const navigate = useNavigate()
@@ -18,6 +16,7 @@ export function Home() {
   const statusMessage = useAuthStore((s) => s.statusMessage)
   const login = useAuthStore((s) => s.login)
   const clearStatusMessage = useAuthStore((s) => s.clearStatusMessage)
+  const { isDark, toggleTheme } = useTheme()
 
   const [role, setRole] = useState<Role>('guard')
   const [username, setUsername] = useState('')
@@ -50,11 +49,25 @@ export function Home() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-6 py-8">
-      <div className="w-full max-w-5xl grid gap-8 md:grid-cols-2 md:items-center">
+    <main className="flex min-h-screen items-center justify-center bg-background px-4 py-8 sm:px-6">
+      <button
+        type="button"
+        onClick={toggleTheme}
+        className="fixed right-4 top-[calc(env(safe-area-inset-top,0px)+1rem)] inline-flex items-center gap-2 rounded-full border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-accent/70"
+        aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+      >
+        {isDark ? <FiSun className="h-4 w-4" /> : <FiMoon className="h-4 w-4" />}
+        {isDark ? 'Claro' : 'Oscuro'}
+      </button>
+
+      <div className="grid w-full max-w-5xl justify-items-center gap-8 md:grid-cols-2 md:items-center md:justify-items-stretch">
         <div className="hidden md:flex flex-col gap-4">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-            <FiBookOpen className="h-4 w-4 text-primary" aria-hidden />
+          <div className="inline-flex w-fit items-center gap-3 rounded-full border bg-primary/10 px-4 py-2 text-base font-semibold text-primary">
+            <img
+              src="/caballero-armadura-protegido-escudo_1057-219168.avif"
+              alt="Logo VigiLog"
+              className="h-10 w-10 rounded-full object-cover"
+            />
             VigiLog
           </div>
           <h1 className="text-4xl font-bold leading-tight">Registro de vigilancia digital</h1>
@@ -63,16 +76,21 @@ export function Home() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-6 w-full max-w-sm md:justify-self-end">
-          <div className="flex flex-col items-center gap-2 md:hidden">
-            <div className="rounded-2xl border bg-card p-4 shadow-sm mb-2 flex items-center justify-center">
-              <FiBookOpen className="h-12 w-12 text-primary" aria-hidden />
+        <div className="mx-auto flex w-full max-w-sm flex-col items-center gap-6 md:mx-0 md:justify-self-end">
+          <div className="flex w-full flex-col items-center gap-2 text-center md:hidden">
+            <div className="mb-2 inline-flex items-center gap-2.5 rounded-full border bg-primary/10 px-4 py-2 text-base font-semibold text-primary">
+              <img
+                src="/caballero-armadura-protegido-escudo_1057-219168.avif"
+                alt="Logo VigiLog"
+                className="h-10 w-10 rounded-full object-cover"
+              />
+              VigiLog
             </div>
             <h1 className="text-2xl font-bold">VigiLog</h1>
             <p className="text-sm text-muted-foreground text-center">Registro digital de vigilancia</p>
           </div>
 
-          <div className="w-full space-y-4 rounded-2xl border bg-card p-4 shadow-sm ring-1 ring-primary/10">
+          <div className="mx-auto w-full space-y-4 rounded-2xl border bg-card p-4 shadow-sm ring-1 ring-primary/10">
             {statusMessage && (
               <div
                 className={cn(
@@ -124,7 +142,7 @@ export function Home() {
                 </AppButton>
               </div>
 
-              <p className="text-sm text-muted-foreground">{titleByRole}</p>
+              <p className="text-center text-sm text-muted-foreground md:text-left">{titleByRole}</p>
 
               <div className="space-y-2">
                 <Label htmlFor="username">Usuario</Label>
@@ -151,7 +169,7 @@ export function Home() {
                 />
               </div>
 
-              {localError && <p className="text-sm text-destructive">{localError}</p>}
+              {localError && <p className="text-center text-sm text-destructive md:text-left">{localError}</p>}
 
               <AppButton type="submit">Continuar</AppButton>
             </form>

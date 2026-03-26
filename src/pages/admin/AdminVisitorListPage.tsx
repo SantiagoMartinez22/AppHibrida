@@ -1,50 +1,29 @@
 import { useState, useMemo } from 'react'
 import { SearchInput } from '@/components/atoms/SearchInput'
-import { ThreeTabToggle } from '@/components/molecules/ThreeTabToggle'
+import { TabToggle } from '@/components/molecules/TabToggle'
 import { VisitorCard } from '@/components/molecules/VisitorCard'
 import { VisitorBarChart } from '@/components/molecules/VisitorBarChart'
 import { MonthCalendar } from '@/components/molecules/MonthCalendar'
+import { ExcelToolbar } from '@/components/molecules/ExcelToolbar'
 import { PageHeader } from '@/components/templates/PageHeader'
 import { BottomNavBar } from '@/components/templates/BottomNavBar'
 import { useVisitorStore } from '@/store/visitorStore'
-
-type TabValue = 'active' | 'history' | 'stats'
+import { useVisitorFilter } from '@/hooks/useVisitorFilter'
+import type { VisitorFilterTab } from '@/hooks/useVisitorFilter'
 
 export function AdminVisitorListPage() {
   const [search, setSearch] = useState('')
-  const [tab, setTab] = useState<TabValue>('active')
+  const [tab, setTab] = useState<VisitorFilterTab>('active')
   const [statsDate, setStatsDate] = useState(new Date())
 
   const visitors = useVisitorStore((s) => s.visitors)
-
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    let list = tab === 'active'
-      ? visitors.filter((v) => v.status === 'active')
-      : tab === 'history'
-      ? [...visitors]
-      : []
-
-    if (tab === 'history') {
-      list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    }
-    
-    if (q && tab !== 'stats') {
-      list = list.filter(
-        (v) =>
-          v.visitorName.toLowerCase().includes(q) ||
-          v.destination.toLowerCase().includes(q) ||
-          v.registeredBy.toLowerCase().includes(q)
-      )
-    }
-    return list
-  }, [visitors, tab, search])
+  const filtered = useVisitorFilter({ visitors, search, tab })
 
   const title = tab === 'active'
     ? 'Visitantes Activos'
     : tab === 'history'
-    ? 'Historial de Registros'
-    : 'Estadísticas de Visitantes'
+      ? 'Historial de Registros'
+      : 'Estadísticas de Visitantes'
 
   const statsDateRange = useMemo(() => {
     const selected = new Date(statsDate)
@@ -74,7 +53,7 @@ export function AdminVisitorListPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <ThreeTabToggle<TabValue>
+          <TabToggle<VisitorFilterTab>
             options={[
               { value: 'active', label: 'Activos' },
               { value: 'history', label: 'Historial' },
@@ -83,8 +62,9 @@ export function AdminVisitorListPage() {
             value={tab}
             onChange={setTab}
           />
+          {tab !== 'stats' && <ExcelToolbar visitors={visitors} />}
         </section>
-        
+
         {tab === 'stats' ? (
           <div className="grid gap-4 md:grid-cols-2">
             <VisitorBarChart visitors={visitors} dateRange={statsDateRange} />

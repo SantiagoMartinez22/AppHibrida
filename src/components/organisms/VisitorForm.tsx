@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { FormField } from '@/components/molecules/FormField'
-import { AlertBanner } from '@/components/molecules/AlertBanner'
 import { AppButton } from '@/components/atoms/AppButton'
 import { useVisitorStore } from '@/store/visitorStore'
 import { useAuthStore } from '@/store/authStore'
@@ -21,12 +20,11 @@ export function VisitorForm() {
   const addVisitor = useVisitorStore((s) => s.addVisitor)
   const session = useAuthStore((s) => s.session)
   const [form, setForm] = useState({ ...INITIAL_FORM, registeredBy: session?.username ?? '' })
-    useEffect(() => {
-      setForm((prev) => ({ ...prev, registeredBy: session?.username ?? '' }))
-    }, [session?.username])
+  useEffect(() => {
+    setForm((prev) => ({ ...prev, registeredBy: session?.username ?? '' }))
+  }, [session?.username])
 
   const [errors, setErrors] = useState<FormErrors>({})
-  const [saveError, setSaveError] = useState(false)
 
   const updateField = useCallback((field: keyof typeof INITIAL_FORM, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -43,23 +41,18 @@ export function VisitorForm() {
   }, [form])
 
   const performSave = useCallback(() => {
-    setSaveError(false)
     if (!validate()) return
 
-    try {
-      addVisitor({
-        registeredBy: form.registeredBy.trim(),
-        visitorName: form.visitorName.trim(),
-        destination: form.destination.trim(),
-        observation: form.observation.trim() || undefined,
-      })
-      toast.success('Registro guardado correctamente')
-      setForm({ ...INITIAL_FORM, registeredBy: session?.username ?? '' })
-      setErrors({})
-      navigate('/guard')
-    } catch {
-      setSaveError(true)
-    }
+    addVisitor({
+      registeredBy: form.registeredBy.trim(),
+      visitorName: form.visitorName.trim(),
+      destination: form.destination.trim(),
+      observation: form.observation.trim() || undefined,
+    })
+    toast.success('Registro guardado correctamente')
+    setForm({ ...INITIAL_FORM, registeredBy: session?.username ?? '' })
+    setErrors({})
+    navigate('/guard')
   }, [form, validate, addVisitor, navigate, session?.username])
 
   const handleSubmit = useCallback(
@@ -70,20 +63,8 @@ export function VisitorForm() {
     [performSave]
   )
 
-  const handleRetry = useCallback(() => {
-    performSave()
-  }, [performSave])
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      {saveError && (
-        <AlertBanner
-          title="No se pudo guardar"
-          message="Ocurrió un error al guardar el registro"
-          actionLabel="Intentar de nuevo"
-          onAction={handleRetry}
-        />
-      )}
 
       <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
         <h2 className="text-base font-semibold mb-4">Información del Visitante</h2>
@@ -121,6 +102,7 @@ export function VisitorForm() {
             placeholder="Detalle adicional (opcional)"
             value={form.observation}
             onChange={(e) => updateField('observation', e.target.value)}
+            multiline
           />
         </div>
       </div>

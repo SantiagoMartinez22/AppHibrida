@@ -8,11 +8,8 @@ import { AdminDashboard } from '@/pages/admin/AdminDashboard'
 import { AdminVisitorListPage } from '@/pages/admin/AdminVisitorListPage'
 import { AdminVisitorDetail } from '@/pages/admin/AdminVisitorDetail'
 import { useAuthStore } from '@/store/authStore'
+import { isValidRole } from '@/lib/visitor-utils'
 import type { Role } from '@/types'
-
-function isValidRole(role: unknown): role is Role {
-  return role === 'guard' || role === 'admin'
-}
 
 function RequireRole({ role, children }: { role: Role; children: React.ReactElement }) {
   const session = useAuthStore((s) => s.session)

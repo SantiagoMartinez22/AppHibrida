@@ -6,7 +6,7 @@ export interface TabToggleOption<T extends string> {
 }
 
 export interface TabToggleProps<T extends string> {
-  options: [TabToggleOption<T>, TabToggleOption<T>]
+  options: TabToggleOption<T>[]
   value: T
   onChange: (value: T) => void
   className?: string

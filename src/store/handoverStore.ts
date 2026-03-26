@@ -1,13 +1,14 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { ShiftHandover } from '@/types'
+import { HANDOVERS_STORAGE_KEY } from '@/constants'
 
 interface HandoverState {
     handovers: ShiftHandover[]
     deliverTurn: (payload: { fromUser: string; toUser?: string }) => ShiftHandover
 }
 
-const HANDOVER_STORAGE_KEY = 'vigilog-handovers'
+export { HANDOVERS_STORAGE_KEY }
 
 export const useHandoverStore = create<HandoverState>()(
     persist(
@@ -29,7 +30,7 @@ export const useHandoverStore = create<HandoverState>()(
             },
         }),
         {
-            name: HANDOVER_STORAGE_KEY,
+            name: HANDOVERS_STORAGE_KEY,
         }
     )
 )
