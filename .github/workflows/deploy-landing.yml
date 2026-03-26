@@ -3,7 +3,7 @@ name: Deploy Landing to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - code_cleaning
     paths:
       - 'landing/**'
       - 'docs/privacy.html'
